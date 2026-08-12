@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" href = "style.css">
+    <title>Movie Watchlist</title>
+</head>
+<body>
+    <main>
+        <!-- Navigation Bar-->
+
+        <header>
+            <nav id = "navbar" class="navbar">
+                <a class = "logo" href = "/">Logo</a>
+
+                <ul class = "nav-menu">
+                    <li><a href = "index.html">Dashboard</a></li>
+                    <li><a href = "watchlist.html">Watchlist</a></li>
+                    <li><a href = "#discover">Discover</a></li>
+                    <li><a href = "#insights">Insights</a></li>
+                </ul>
+
+                <div class = "nav-actions">
+                    <button class = "login-btn">Login</button>
+
+                    <button class = "menu-toggle" aria-label="Open Menu">☰</button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Dashboard Section -->
+
+        <section id = "dashboard-section" class = "dashboard-section">
+            <div id = "dashboard-container" class = "dashboard-container">
+                <div class = "dbstats-block">
+                    <div class = "dbtext-block">
+                        <h1 class = "dashboard-title">Your Movie Collection</h1>
+                        <p class = "dashboard-subtitle">Keep track of what you've watched and what's next</p>
+                    </div>
+
+                    <div class = "dashboard-stats">
+                        <article class = "dashboard-card">
+                            <h3>Total Movies</h3>
+                            <p>131</p>
+                        </article>
+                        <article class = "dashboard-card">
+                            <h3>Watched</h3>
+                            <p>47</p>
+                        </article>
+                        <article class = "dashboard-card">
+                            <h3>To Watch</h3>
+                            <p>84</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Watchlist Section -->
+
+        <section id = "watchlist-section" class = "watchlist-section">
+            <div id = "watchlist-container" class = "watchlist-container">
+
+                <div class="watchlist-content">
+                    <div class = "watchlist-header">
+                        <h2>My Watchlist</h2>
+                        <p class = "wl-subtitle">Your complete list of shows</p>
+                    </div>
+
+                    <div class="filters-btn">
+                        <button type="button">All</button>
+                        <button type="button">Watched</button>
+                        <button type="button">To Watch</button>
+                    </div>
+                </div>
+
+                <div class="movie-poster-cards">
+                    <article class="movie-poster-card">
+                        <div class="movie-card-image">
+                            <img src=" " alt="">
+                        </div>
+
+                        <div class = "movie-card-description">
+                            <h3 class="movie-title"></h3>
+                            <p class="movie-rating"></p>
+                            <p class="movie-status"></p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src = "script.js"></script>
+</body>
+</html>

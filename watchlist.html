@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Watchlist</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+            <nav id = "navbar" class="navbar">
+                <a class = "logo" href = "/">Logo</a>
+
+                <ul class = "nav-menu">
+                    <li><a href = "index.html">Dashboard</a></li>
+                    <li><a href = "watchlist.html">Watchlist</a></li>
+                    <li><a href = "#discover">Discover</a></li>
+                    <li><a href = "#insights">Insights</a></li>
+                </ul>
+
+                <div class = "nav-actions">
+                    <button class = "login-btn">Login</button>
+
+                    <button class = "menu-toggle" aria-label="Open Menu">☰</button>
+                </div>
+            </nav>
+        </header>
+
+
+    <main>
+
+        <section class="wlpage-section" id="watchlist">
+
+            <div class="watchlist-content">
+                <h1 class="wl-title">Watchlist</h1>
+                <p class="wl-subtitle">
+                    Your complete list of movies and shows
+                </p>
+            </div>
+
+            <div class="watchlist-block">
+
+                <!-- Add Movie -->
+                <section class="add-movie" aria-labelledby="add-movie-title">
+
+                    <h2 id="add-movie-title">
+                        Add to Watchlist
+                    </h2>
+                    <form id="add-movie-form">
+                        <div class="movie-input-group">
+                            <label for="movie-input">
+                                Movie or show title
+                            </label>
+                            <input
+                                type="text"
+                                id="movie-input"
+                                name="movie"
+                                placeholder="Enter a movie or show..."
+                                autocomplete="off"
+                                required>
+                        </div>
+                        <div class="poster-input-group">
+                            <label for="poster-input">
+                                Poster image
+                            </label>
+
+                            <input
+                                type="file"
+                                id="poster-input"
+                                name="poster"
+                                accept="image/*">
+
+                            <p class="poster-help">
+                                Upload an image for your movie poster.
+                            </p>
+                        </div>
+
+                        <button
+                            type="submit"
+                            id="add-movie-btn">
+                            Add Movie
+                        </button>
+                    </form>
+                </section>
+
+                <!-- Watchlist Header -->
+                <section
+                    class="watchlist-list"
+                    aria-labelledby="watchlist-list-title">
+
+                    <div class="watchlist-header">
+                        <h2 id="watchlist-list-title">
+                            My Watchlist
+                        </h2>
+
+                        <div
+                            class="watchlist-filters"
+                            aria-label="Watchlist filters">
+
+                            <button
+                                type="button"
+                                class="filter-btn active"
+                                data-filter="all">
+                                All
+                            </button>
+
+                            <button
+                                type="button"
+                                class="filter-btn"
+                                data-filter="watched">
+                                Watched
+                            </button>
+
+                            <button
+                                type="button"
+                                class="filter-btn"
+                                data-filter="to-watch">
+                                To Watch
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Movie Cards -->
+                    <div
+                        class="movie-poster-cards"
+                        id="movie-poster-cards"
+                        aria-live="polite">
+                        <!-- JavaScript generates movie cards here -->
+                    </div>
+
+                    <!-- Empty Watchlist -->
+                    <div
+                        class="watchlist-empty"
+                        id="watchlist-empty"
+                        hidden>
+
+                        <h2>
+                            Your watchlist is empty
+                        </h2>
+                        <p>
+                            Add a movie or show to get started.
+                        </p>
+                        <button
+                            type="button"
+                            id="empty-add-btn">
+                            Add a Movie
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
