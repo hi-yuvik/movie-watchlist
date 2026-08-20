@@ -17,8 +17,7 @@
                 <ul class = "nav-menu">
                     <li><a href = "index.html">Dashboard</a></li>
                     <li><a href = "watchlist.html">Watchlist</a></li>
-                    <li><a href = "#discover">Discover</a></li>
-                    <li><a href = "#insights">Insights</a></li>
+                    <li><a href = "insights.html">Insights</a></li>
                 </ul>
 
                 <div class = "nav-actions">
@@ -69,25 +68,13 @@
                         <p class = "wl-subtitle">Your complete list of shows</p>
                     </div>
 
-                    <div class="filters-btn">
-                        <button type="button">All</button>
-                        <button type="button">Watched</button>
-                        <button type="button">To Watch</button>
-                    </div>
+                    <a href="watchlist.html" class="seeall-btn">
+                        See All
+                    </a>
                 </div>
 
-                <div class="movie-poster-cards">
-                    <article class="movie-poster-card">
-                        <div class="movie-card-image">
-                            <img src=" " alt="">
-                        </div>
-
-                        <div class = "movie-card-description">
-                            <h3 class="movie-title"></h3>
-                            <p class="movie-rating"></p>
-                            <p class="movie-status"></p>
-                        </div>
-                    </article>
+                <div class="movie-poster-cards" id="movie-poster-cards">
+                    <!-- JavaScript generates movie cards here -->
                 </div>
             </div>
         </section>

@@ -11,15 +11,14 @@
 </head>
 
 <body>
-
-    <header>
+    <main>
+        <header>
             <nav id = "navbar" class="navbar">
                 <a class = "logo" href = "/">Logo</a>
 
                 <ul class = "nav-menu">
                     <li><a href = "index.html">Dashboard</a></li>
                     <li><a href = "watchlist.html">Watchlist</a></li>
-                    <li><a href = "#discover">Discover</a></li>
                     <li><a href = "#insights">Insights</a></li>
                 </ul>
 
@@ -31,19 +30,18 @@
             </nav>
         </header>
 
+        <!-- Watchlist Section -->
 
-    <main>
+        <section class="wlpage-section wllist-header" id="watchlist">
 
-        <section class="wlpage-section" id="watchlist">
-
-            <div class="watchlist-content">
+            <div class="wlpage-content wlpage-header">
                 <h1 class="wl-title">Watchlist</h1>
                 <p class="wl-subtitle">
                     Your complete list of movies and shows
                 </p>
             </div>
 
-            <div class="watchlist-block">
+            <div class="wlpage-block">
 
                 <!-- Add Movie -->
                 <section class="add-movie" aria-labelledby="add-movie-title">
@@ -51,7 +49,7 @@
                     <h2 id="add-movie-title">
                         Add to Watchlist
                     </h2>
-                    <form id="add-movie-form">
+                    <form id="add-movie-form" class = "add-movie-form">
                         <div class="movie-input-group">
                             <label for="movie-input">
                                 Movie or show title
@@ -64,24 +62,26 @@
                                 autocomplete="off"
                                 required>
                         </div>
+
                         <div class="poster-input-group">
-                            <label for="poster-input">
-                                Poster image
+                            <label for = "movie-poster" class = "movie-poster">Upload Poster</label>
+                            
+                            <label for="poster-input" class = "poster-upload-box">
+                                <span class = "dragdrop-text">Drag &  drop to upload or</span>
+
+                                <span class = "upload-text">+ Choose files</span>
                             </label>
 
                             <input
                                 type="file"
                                 id="poster-input"
                                 name="poster"
-                                accept="image/*">
-
-                            <p class="poster-help">
-                                Upload an image for your movie poster.
-                            </p>
+                                accept="image/*"
+                            >
                         </div>
 
                         <button
-                            type="submit"
+                            type="submit" class = "add-movie-btn"
                             id="add-movie-btn">
                             Add Movie
                         </button>
@@ -90,35 +90,35 @@
 
                 <!-- Watchlist Header -->
                 <section
-                    class="watchlist-list"
+                    class="mywatchlist-section"
                     aria-labelledby="watchlist-list-title">
 
-                    <div class="watchlist-header">
+                    <div class="watchlist-content">
                         <h2 id="watchlist-list-title">
                             My Watchlist
                         </h2>
 
                         <div
-                            class="watchlist-filters"
-                            aria-label="Watchlist filters">
+                            class="filters-btn"
+                            aria-label="Watchlist filter">
 
                             <button
                                 type="button"
-                                class="filter-btn active"
+                                class="wl-filtersbtn active"
                                 data-filter="all">
                                 All
                             </button>
 
                             <button
                                 type="button"
-                                class="filter-btn"
+                                class="wl-filtersbtn"
                                 data-filter="watched">
                                 Watched
                             </button>
 
                             <button
                                 type="button"
-                                class="filter-btn"
+                                class="wl-filtersbtn"
                                 data-filter="to-watch">
                                 To Watch
                             </button>
