@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel = "stylesheet" href = "style.css">
     <title>Movie Watchlist</title>
 </head>
 <body>
@@ -16,7 +17,7 @@
                 <ul class = "nav-menu">
                     <li><a href = "index.html">Dashboard</a></li>
                     <li><a href = "watchlist.html">Watchlist</a></li>
-                    <li><a href = "insights.html">Insights</a></li>
+                    <li><a href = "insights.html" class = "active">Insights</a></li>
                 </ul>
 
                 <div class = "nav-actions">
@@ -36,31 +37,66 @@
                 </div>
 
                 <div class = "insights-content">
-                    <div class = "insights-card-block">
-                        <article class = "insight-card">
+                    <div class = "movie-stats-cards">
+                        <article class = "movie-stat-card">
                             <h2>Total Movies</h2>
                             <p></p>
                         </article>
 
-                        <article class = "insight-card">
+                        <article class = "movie-stat-card">
                             <h2>Watched</h2>
                             <p></p>
                         </article>
 
-                        <article class = "insight-card">
+                        <article class = "movie-stat-card">
                             <h2>To Watch</h2>
                             <p></p>
                         </article>
 
-                        <article class = "insight-card">
+                        <article class = "movie-stat-card">
                             <h2>Average Rating</h2>
                             <p></p>
                         </article>
+                    </div>
+
+                    <div class = "completion-overview">
+                        <div class = "completion-title">
+                            <h2>Completion Overview</h2>
+                        </div>
+
+                        <!--
+                        <div class = "completion-stats">
+                            <div class = "completion-stat">
+                                <span class = "stat-value" id = "total-movies">0</span>
+                                <span class = "stat-label">Total Movies</span>
+                            </div>
+                            <div class = "completion-stat">
+                                <span class = "stat-value" id = "watched-movies">0</span>
+                                <span class = "stat-label">Watched</span>
+                            </div>
+                            <div class = "completion-stat">
+                                <span class = "stat-value" id = "remaining-movies">0</span>
+                                <span class = "stat-label">To Watch</span>
+                            </div>
+                        </div> -->
+
+                        <div class = "completion-progress">
+                            <div class = "progress-header">
+                                <span class = "span-wlcmptd">Watchlist Completed</span>
+                                <span id = "completion-percentage">0%</span>
+                            </div>
+                            <div class = "progress-bar">
+                                <div class = "progress-fill" id = "progress-fill">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
          </section>
     </main>
     
+
+    <script src = "script.js"></script>
 </body>
 </html>

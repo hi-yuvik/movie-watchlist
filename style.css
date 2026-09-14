@@ -95,7 +95,7 @@ body
 .nav-menu
 {
     display: flex;
-    gap: 3.5rem;
+    gap: 3.0rem;
 
     list-style: none;
 }
@@ -133,8 +133,9 @@ body
     border-radius: 10rem;
 }
 
-.nav-menu a:active
+.nav-menu .active
 {
+    font-weight: 500;
     color: var(--accent-color);
 }
 
@@ -215,7 +216,7 @@ body
     font-size: 1.25rem;
 }
 
-.dashboard-stats
+.movie-stats-cards
 {
     display: flex;
     flex-direction: row;
@@ -223,7 +224,7 @@ body
     gap: 1.5rem;
 }
 
-.dashboard-card
+.movie-stat-card
 {
     display: flex;
     flex: 1;
@@ -242,27 +243,28 @@ body
 
     gap: 0.25rem;
 
+    cursor: pointer;
+
     transition:
-        transform 0.15s ease,
+        transform 0.15s ease, 
         background-color 0.2s ease;
 }
 
-.dashboard-card h3
+.movie-stat-card h3
 {
     color: var(--secondary-text);
     font-size: 1.25rem;
 }
 
-.dashboard-card p
+.movie-stat-card p
 {
     color: var(--accent-color);
     font-size: 2.5rem;
 }
 
-.dashboard-card:hover
+.movie-stat-card:hover
 {
     background-color: var(--acctran-color);
-
     transform: translateY(0.25rem);
 }
 
@@ -370,8 +372,8 @@ body
     display: flex;
     flex-direction: column;
 
+    margin-top: var(--navbar-height);
     padding: 5rem;
-
     gap: 2rem;
 }
 
@@ -380,9 +382,8 @@ body
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
 
-    gap: 0.25rem;
+    gap: 0.5rem;
 }
 
 .wlpage-content h1
@@ -733,3 +734,94 @@ body
 
     cursor: pointer;
 }
+
+/* =========================
+   Insights Page
+========================= */
+
+.insights-section
+{
+    margin-top: var(--navbar-height);
+    padding: 5rem;
+}
+
+.insights-container
+{
+    display: flex;
+    flex-direction: column;
+
+    gap: 2rem;
+}
+
+.insights-title-block
+{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.insights-title-block h1
+{
+    font-size: 2.5rem;
+    color: var(--accent-color);
+}
+.insights-title-block p
+{
+    font-size: 1.25rem;
+    color: var(--subtitle-text);
+}
+
+/* movie-stat-card is in dashboard section */
+
+.insights-content
+{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.completion-overview
+{
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+}
+
+.completion-title h2
+{
+    font-size: 1.5rem;
+    color: var(--secondary-text);
+}
+
+.progress-header
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    padding: 0 1rem;
+}
+
+.span-wlcmptd
+{
+    font-size: 1rem;
+    color: var(--primary-text);
+}
+
+
+/* =========================
+   Responsive Page
+========================= */
+
+
+
+
+
+
+
+
+
+
+
+
