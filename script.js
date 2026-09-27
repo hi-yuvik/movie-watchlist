@@ -16,15 +16,48 @@ function handleScroll()
 
 window.addEventListener("scroll", handleScroll);
 
-const addmovieForm = document.getElementById("add-movie-form");
 const movieInput = document.getElementById("movie-input");
 const posterInput = document.getElementById("poster-input");
 const addmovieBtn = document.getElementById("add-movie-btn");
+const addmovieForm = document.getElementById("add-movie-form");
 const movieposterCards = document.getElementById("movie-poster-cards");
 const watchlistEmpty = document.getElementById("watchlist-empty");
 
+addmovieBtn.disabled = true;
+
 let movies = [];
-console.log(addmovieForm);
+
+function saveMovies()
+{
+    localStorage.setItem("movies", JSON.stringify(movies));
+
+    console.log("Saved Movies: ", localStorage.getItem("movies"));
+    console.log("Movies Array : ", movies);
+}
+
+function loadMovies()
+{
+    const savedMovies = localStorage.getItem("movies");
+
+    if(savedMovies)
+    {
+        movies = JSON.parse(savedMovies);
+    }
+
+    console.log("Loaded Movies: ", movies);
+}
+
+movieInput.addEventListener("input", function()
+    {
+        if(movieInput.value.trim() === "")
+        {
+            addmovieBtn.disabled = true;
+        }
+        else
+        {
+            addmovieBtn.disabled = false;
+        }
+    });
 
 // Render Movies //
 
@@ -52,51 +85,116 @@ function renderMovies()
 
         // Creating poster variable to store
 
+        const imageCard = document.createElement("div");
+        imageCard.classList.add("movie-image");
+
         const moviePoster = document.createElement("img");
-        moviePoster.src = movie.poster;
-        moviePoster.alt = movie.title;
 
-        movieCard.append(moviePoster);
+        if(movie.poster)
+        {
+            moviePoster.src = movie.poster;
+            moviePoster.alt = movie.title;
 
+            imageCard.append(moviePoster);
+        }
 
-        // Creating Movie Card & Title
+        // Creating Movie Title & Description
+
+        const movieDescription = document.createElement("div");
+        movieDescription.classList.add("movie-description");
 
         const movieTitle = document.createElement("h2");
+        movieTitle.classList.add("movie-title");
         movieTitle.textContent = movie.title;
 
-        movieCard.append(movieTitle);
+        // Creating movie info
 
-        // Creating movie status(watched or not)
+        const movieInfo = document.createElement("div");
+        movieInfo.classList.add("movie-info");
+
+        // Creating Rating
+        
+        const movieRating = document.createElement("div");
+        movieRating.classList.add("movie-rating");
+
+        const ratingStars = document.createElement("div");
+        ratingStars.classList.add("rating-stars");
+
+        const movieIndex = movies.findIndex(function(movieItem)
+        {
+            return movieItem.id === movie.id;
+        });
+
+        for(let i = 1; i <= 5; i++)
+        {
+            const star = document.createElement("button");
+
+            star.type = "button";
+            star.classList.add("rating-star");
+            star.textContent = "☆";
+            star.dataset.rating = i;
+
+            if(movie.rating !== null && i <= movie.rating)
+            {
+                star.textContent = "★";
+            }
+
+            star.addEventListener("click", function(event)
+            {
+                event.stopPropagation();
+
+                const rating = Number(event.currentTarget.dataset.rating);
+
+                movies[movieIndex].rating = rating;
+
+                saveMovies();
+                renderMovies();
+            });
+
+            ratingStars.append(star);
+        }
+
+        movieRating.append(ratingStars);
+
+        movieInfo.append(movieRating);
+
+        // Movie watched status(watched or not)
 
         const movieStatus = document.createElement("p");
+        movieStatus.classList.add("movie-status");
+
         if(movie.watched)
         {
             movieStatus.textContent = "Watched";
         }
-        else{
+        else
+        {
             movieStatus.textContent = "Not Watched";
         }
 
-        movieCard.append(movieStatus);
+        movieInfo.append(movieStatus);
 
-        // Creating movie rating
+        movieDescription.append(movieTitle);
+        movieDescription.append(movieInfo);
 
-        const movieRating = document.createElement("p");
-        if(movie.rating === null)
-        {
-            movieRating.textContent = "Rating: --";
-        }
-        else
-        {
-            movieRating.textContent = `Rating : ${movie.rating}`;
-        }
+        // Creating Movie Actions
 
-        movieCard.append(movieRating);
+        const movieActions = document.createElement("div");
+        movieActions.classList.add("movie-actions");
 
         // Add Watched Button & Status Update
 
         const watchedBtn = document.createElement("button");
-        watchedBtn.textContent = "Watched";
+        watchedBtn.classList.add("watch-btn");
+
+        if(movie.watched)
+        {
+            watchedBtn.textContent = "Unwatched";
+        }
+        else
+        {
+            watchedBtn.textContent = "Watched";
+        }
 
         watchedBtn.dataset.id = movie.id;
 
@@ -111,14 +209,17 @@ function renderMovies()
 
             movies[movieIndex].watched = !movies[movieIndex].watched;
 
+            saveMovies();
             renderMovies();
         });
 
-        movieCard.append(watchedBtn);
+        movieActions.append(watchedBtn);
 
         // Add Delete Button & Status Update
 
         const deleteBtn = document.createElement("button");
+        deleteBtn.classList.add("delete-btn");
+
         deleteBtn.textContent = "Delete";
         deleteBtn.dataset.id = movie.id;
 
@@ -133,116 +234,101 @@ function renderMovies()
             });
 
             movies.splice(movieIndex, 1);
+
+            saveMovies();
             renderMovies();
         });
 
-        movieCard.append(deleteBtn);
+        movieActions.append(deleteBtn);
 
-        // Add Rating and Rating Update
+        movieCard.append(imageCard);
 
-        const movieTitleRating = document.createElement("div");
-        movieTitleRating.classList.add("movietitle-rating");
+        // Created divs to put footer content into 1 div
 
-        const movieTitle = document.createElement("h2");
-        movieTitle.textContent = movie.title;
+        const movieFooter = document.createElement("div");
+        movieFooter.classList.add("movie-footer");
 
-        const movieRating = document.createElement("p");
+        movieFooter.append(movieDescription);
+        movieFooter.append(movieActions);
 
-        if(movie.rating === null)
-        {
-            movieRating.textContent = "Rating: --"
-        }
-        else
-        {
-            movieRating.textContent = "Rating: ";
+        movieCard.append(movieFooter);
 
-            for(i = 1; i<=5; i++)
-            {
-                if(i<=movie.rating)
-                {
-                    movieRating.textContent += "★";
-                }
-                else
-                {
-                    movieRating.textContent += "☆";
-                }
-            }
-        }
-
-        movieRating.dataset.id = movie.id;
-
-        movieRating.addEventListener("click", function(event)
-        {
-            const movieId = event.currentTarget.dataset.id;
-            const movieIndex = movies.findIndex(function(movie)
-            {
-                return movie.id === Number(movieId);
-            });
-
-            const ratingStars = document.createElement("div");
-            ratingStars.classList.add("rating-stars");
-
-            for(let i = 1; i<=5; i++)
-            {
-                const star = document.createElement("button");
-
-                star.textContent = "☆";
-                star.dataset.rating = i;
-
-                star.addEventListener("click", function(event)
-                {
-                    const rating = Number(event.currentTarget.dataset.rating);
-
-                    movies[movieIndex].rating = rating;
-                    renderMovies();
-                });
-
-                ratingStars.append(star);
-            }
-
-            movieTitleRating.append(ratingStars);
-        });
-
-        movieTitleRating.append(movieTitle);
-        movieTitleRating.append(movieRating);
+        movieposterCards.append(movieCard);
     });
 }
+
+loadMovies();
+renderMovies();
 
 // Type and Add Movie //
 
 addmovieForm.addEventListener("submit", function(event)
 {
     event.preventDefault();
+
+    console.log("FORM SUBMITTED");
+
     const movieTitle = movieInput.value.trim();
     const posterFile = posterInput.files[0];
 
-    if(!posterFile)
+    const movie = 
     {
-        console.log("No poster selected");
-        return
-    }
-
-    const reader = new FileReader();
-    reader.onload = function()
-    {
-        const movie = 
-        {
-            title: movieTitle,
-            id: Date.now(),
-            watched: false,
-            rating: null,
-            poster: reader.result
-        };
-
-        movies.push(movie);
-        renderMovies();
-
-        movieInput.value = "";
-        posterInput.value = "";
+        title: movieTitle,
+        id: Date.now(),
+        watched: false,
+        rating: null,
+        poster: null
     };
 
-    reader.readAsDataURL(posterFile);
+    if(posterFile)
+    {
+        const reader = new FileReader();
+
+        reader.onload = function()
+        {
+            movie.poster = reader.result;
+
+            movies.push(movie);
+            saveMovies();
+            renderMovies();
+        };
+
+        reader.readAsDataURL(posterFile);
+    }
+    else
+    {
+        movies.push(movie);
+        saveMovies();
+        renderMovies();
+    }
+
+    movieInput.value = "";
+    posterInput.value = "";
+    addmovieBtn.disabled = true;
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
