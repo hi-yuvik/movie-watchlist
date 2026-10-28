@@ -23,7 +23,10 @@ const addmovieForm = document.getElementById("add-movie-form");
 const movieposterCards = document.getElementById("movie-poster-cards");
 const watchlistEmpty = document.getElementById("watchlist-empty");
 
-addmovieBtn.disabled = true;
+if(addmovieBtn)
+    {
+        addmovieBtn.disabled = true;
+    }
 
 let movies = [];
 
@@ -33,6 +36,8 @@ function saveMovies()
 
     console.log("Saved Movies: ", localStorage.getItem("movies"));
     console.log("Movies Array : ", movies);
+
+    updateInsights();
 }
 
 function loadMovies()
@@ -47,7 +52,103 @@ function loadMovies()
     console.log("Loaded Movies: ", movies);
 }
 
-movieInput.addEventListener("input", function()
+// Render Dashboard Movies
+
+const dashboardMovieCards = document.getElementById("dashboard-movie-cards");
+
+function renderDashboardMovies()
+{
+    if(!dashboardMovieCards)
+    {
+        return;
+    }
+
+    dashboardMovieCards.innerHTML = "";
+
+    const latestMovies = movies.slice(-4).reverse();
+
+    latestMovies.forEach(function(movie)
+    {
+        const movieCard = document.createElement("div");
+        movieCard.classList.add("movie-card");
+
+        const imageCard = document.createElement("div");
+        imageCard.classList.add("movie-image");
+
+        if(movie.poster)
+        {
+            const moviePoster = document.createElement("img");
+
+            moviePoster.src = movie.poster;
+            moviePoster.alt = movie.title;
+
+            imageCard.append(moviePoster);
+        }
+
+        const movieDescription = document.createElement("div");
+        movieDescription.classList.add("movie-description");
+
+        const movieTitle = document.createElement("h2");
+        movieTitle.classList.add("movie-title");
+        movieTitle.textContent = movie.title;
+
+        const movieInfo = document.createElement("div");
+        movieInfo.classList.add("movie-info");
+
+        const ratingStars = document.createElement("div");
+        ratingStars.classList.add("rating-stars");
+
+        for(let i = 1; i<=5; i++)
+        {
+            const star = document.createElement("span");
+            star.classList.add("rating-star");
+
+            if(movie.rating!== null && i<=movie.rating)
+            {
+                star.textContent = "★";
+            }
+            else
+            {
+                star.textContent = "☆";
+            }
+
+            ratingStars.append(star);
+        }
+
+        movieInfo.append(ratingStars);
+
+        const movieStatus = document.createElement("p");
+        movieStatus.classList.add("movie-status");
+
+        if(movie.watched)
+        {
+            movieStatus.textContent = "Watched";
+        }
+        else
+        {
+            movieStatus.textContent = "Not Watched";
+        }
+
+        movieInfo.append(movieStatus);
+
+        movieDescription.append(movieTitle);
+        movieDescription.append(movieInfo);
+
+        const movieTextContent = document.createElement("div");
+        movieTextContent.classList.add("movie-text-content");
+
+        movieTextContent.append(movieDescription);
+
+        movieCard.append(imageCard);
+        movieCard.append(movieTextContent);
+
+        dashboardMovieCards.append(movieCard);
+    });
+}
+
+if(movieInput)
+{
+    movieInput.addEventListener("input", function()
     {
         if(movieInput.value.trim() === "")
         {
@@ -58,14 +159,98 @@ movieInput.addEventListener("input", function()
             addmovieBtn.disabled = false;
         }
     });
+}
+
+// Filter Methods //
+
+let currentFilter = "all";
+let currentSearch = "";
+
+function filters()
+{
+    let filteredMovies = movies;
+
+    if(currentFilter === "watched")
+    {
+        filteredMovies = movies.filter(function(movie)
+        {
+            return movie.watched === true;
+        });
+    }
+
+    else if(currentFilter === "unwatched")
+    {
+        filteredMovies = movies.filter(function(movie)
+        {
+            return movie.watched === false;
+        });
+    }
+
+    if(currentFilter!== "")
+    {
+        filteredMovies = filteredMovies.filter(function(movie)
+        {
+            return movie.title.toLowerCase().includes(currentSearch);
+        });
+    }
+
+    return filteredMovies;
+}
+
+const filterBtns = document.querySelectorAll("[data-filter]");
+
+filterBtns.forEach(function(btn)
+{
+    btn.addEventListener("click", function()
+    {
+        currentFilter = btn.dataset.filter;
+
+        filterBtns.forEach(function(filterBtn)
+        {
+            filterBtn.classList.remove("active");
+        });
+
+        btn.classList.add("active");
+        renderMovies();
+    });
+});
+
+const searchBar = document.querySelector(".search-bar");
+const searchBtn = document.querySelector(".search-btn");
+
+if(searchBar && searchBtn)
+{
+    searchBtn.addEventListener("click", function(event)
+    {
+        event.preventDefault();
+        currentSearch = searchBar.value.trim().toLowerCase();
+
+        renderMovies();
+    });
+
+    searchBar.addEventListener("keydown", function(event)
+    {
+        if(event.key === "Enter")
+        {
+            event.preventDefault();
+            currentSearch = searchBar.value.trim().toLowerCase();
+            renderMovies();
+        }
+    });
+}
 
 // Render Movies //
 
 function renderMovies()
 {
+    if(!movieposterCards || !watchlistEmpty)
+    {
+        return;
+    }
+
     movieposterCards.innerHTML = "";
 
-    if(movies.length === 0)
+    /* if(movies.length === 0)
     {
         watchlistEmpty.style.display = "block";
         return 
@@ -73,9 +258,21 @@ function renderMovies()
     else
     {
         watchlistEmpty.style.display = "none";
+    } */
+
+    const filteredMovies = filters();
+
+    if(filteredMovies.length === 0)
+    {
+        watchlistEmpty.style.display = "block";
+        return;
+    }
+    else
+    {
+        watchlistEmpty.style.display = "none";
     }
 
-    movies.forEach(function(movie)
+    filteredMovies.forEach(function(movie)
     {
 
         // Creating div and movie-card class
@@ -113,9 +310,6 @@ function renderMovies()
         movieInfo.classList.add("movie-info");
 
         // Creating Rating
-        
-        const movieRating = document.createElement("div");
-        movieRating.classList.add("movie-rating");
 
         const ratingStars = document.createElement("div");
         ratingStars.classList.add("rating-stars");
@@ -148,15 +342,13 @@ function renderMovies()
                 movies[movieIndex].rating = rating;
 
                 saveMovies();
-                renderMovies();
+                renderAllMovies();
             });
 
             ratingStars.append(star);
         }
 
-        movieRating.append(ratingStars);
-
-        movieInfo.append(movieRating);
+        movieInfo.append(ratingStars);
 
         // Movie watched status(watched or not)
 
@@ -210,7 +402,7 @@ function renderMovies()
             movies[movieIndex].watched = !movies[movieIndex].watched;
 
             saveMovies();
-            renderMovies();
+            renderAllMovies();
         });
 
         movieActions.append(watchedBtn);
@@ -236,7 +428,7 @@ function renderMovies()
             movies.splice(movieIndex, 1);
 
             saveMovies();
-            renderMovies();
+            renderAllMovies();
         });
 
         movieActions.append(deleteBtn);
@@ -245,70 +437,175 @@ function renderMovies()
 
         // Created divs to put footer content into 1 div
 
-        const movieFooter = document.createElement("div");
-        movieFooter.classList.add("movie-footer");
+        const movieTextContent = document.createElement("div");
+        movieTextContent.classList.add("movie-text-content");
 
-        movieFooter.append(movieDescription);
-        movieFooter.append(movieActions);
+        movieTextContent.append(movieDescription);
+        movieTextContent.append(movieActions);
 
-        movieCard.append(movieFooter);
+        movieCard.append(movieTextContent);
 
         movieposterCards.append(movieCard);
     });
 }
 
+function renderAllMovies()
+{
+    renderMovies();
+    renderDashboardMovies();
+}
+
 loadMovies();
-renderMovies();
+renderAllMovies();
 
 // Type and Add Movie //
 
-addmovieForm.addEventListener("submit", function(event)
+if(addmovieForm)
 {
-    event.preventDefault();
 
-    console.log("FORM SUBMITTED");
-
-    const movieTitle = movieInput.value.trim();
-    const posterFile = posterInput.files[0];
-
-    const movie = 
+    addmovieForm.addEventListener("submit", function(event)
     {
-        title: movieTitle,
-        id: Date.now(),
-        watched: false,
-        rating: null,
-        poster: null
-    };
+        event.preventDefault();
 
-    if(posterFile)
-    {
-        const reader = new FileReader();
+        console.log("FORM SUBMITTED");
 
-        reader.onload = function()
+        const movieTitle = movieInput.value.trim();
+        const posterFile = posterInput.files[0];
+
+        const movie = 
         {
-            movie.poster = reader.result;
-
-            movies.push(movie);
-            saveMovies();
-            renderMovies();
+            title: movieTitle,
+            id: Date.now(),
+            watched: false,
+            rating: null,
+            poster: null
         };
 
-        reader.readAsDataURL(posterFile);
-    }
-    else
+        if(posterFile)
+        {
+            const reader = new FileReader();
+
+            reader.onload = function()
+            {
+                movie.poster = reader.result;
+
+                movies.push(movie);
+                saveMovies();
+                renderAllMovies();
+            };
+
+            reader.readAsDataURL(posterFile);
+        }
+        else
+        {
+            movies.push(movie);
+            saveMovies();
+            renderAllMovies();
+        }
+
+        movieInput.value = "";
+        posterInput.value = "";
+
+        if(addmovieBtn)
+        {
+            addmovieBtn.disabled = true;   
+        }
+    });
+}
+
+// ========================================
+// INSIGHTS SECTION
+// ========================================
+
+function updateInsights()
+{
+    // Get saved movies
+    let insSavedMovies = JSON.parse(localStorage.getItem("movies")) || [];
+
+    // Select HTML elements
+    let insTotalMoviesElement = document.querySelector("#ins-total-movies");
+    let insWatchedMoviesElement = document.querySelector("#ins-watched-movies");
+    let insUnwatchedMoviesElement = document.querySelector("#ins-unwatched-movies");
+    let insAverageRatingElement = document.querySelector("#ins-average-rating");
+    let insCompletionPercentageElement = document.querySelector("#completion-percentage");
+    let insProgressFillElement = document.querySelector("#progress-fill");
+
+    // Calculate total movies
+    let insTotalCount = insSavedMovies.length;
+
+    // Calculate watched movies
+    let insWatchedCount = insSavedMovies.filter(function(movie)
     {
-        movies.push(movie);
-        saveMovies();
-        renderMovies();
+        return movie.watched === true;
+    }).length;
+
+    // Calculate unwatched movies
+    let insUnwatchedCount = insTotalCount - insWatchedCount;
+
+    // Get movies that have valid ratings
+    let insRatedMovies = insSavedMovies.filter(function(movie)
+    {
+        return typeof movie.rating === "number" &&
+               movie.rating >= 1 &&
+               movie.rating <= 5;
+    });
+
+    // Calculate the total of all ratings
+    let insRatingSum = insRatedMovies.reduce(function(sum, movie)
+    {
+        return sum + movie.rating;
+    }, 0);
+
+    // Calculate average rating
+    let insAverageRating = insRatedMovies.length > 0
+        ? (insRatingSum / insRatedMovies.length).toFixed(1)
+        : "—";
+
+    // Calculate completion percentage
+    let insCompletion = insTotalCount > 0
+        ? Math.round((insWatchedCount / insTotalCount) * 100)
+        : 0;
+
+    // Display total movies
+    if(insTotalMoviesElement)
+    {
+        insTotalMoviesElement.textContent = insTotalCount;
     }
 
-    movieInput.value = "";
-    posterInput.value = "";
-    addmovieBtn.disabled = true;
+    // Display watched movies
+    if(insWatchedMoviesElement)
+    {
+        insWatchedMoviesElement.textContent = insWatchedCount;
+    }
 
-});
+    // Display unwatched movies
+    if(insUnwatchedMoviesElement)
+    {
+        insUnwatchedMoviesElement.textContent = insUnwatchedCount;
+    }
 
+    // Display average rating
+    if(insAverageRatingElement)
+    {
+        insAverageRatingElement.textContent = insAverageRating === "—"
+            ? "—"
+            : insAverageRating + " / 5";
+    }
 
+    // Display completion percentage
+    if(insCompletionPercentageElement)
+    {
+        insCompletionPercentageElement.textContent = insCompletion + "%";
+    }
+
+    // Update progress bar width
+    if(insProgressFillElement)
+    {
+        insProgressFillElement.style.width = insCompletion + "%";
+    }
+}
+
+updateInsights();
 
 
 

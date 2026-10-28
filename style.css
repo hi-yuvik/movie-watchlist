@@ -3,6 +3,8 @@
     --bg-color: #202020;
     --bgtran-color: #272727;
 
+    --white-color: #ffffff;
+
     --primary-text: #f2f2f2;
     --secondary-text: #e0e0e0;
     --subtitle-text: #d4d4d4;
@@ -10,7 +12,10 @@
     --accent-color: #3dcf7a;
     --acctran-color: #3dcf7a3d;
 
-    --warning-color: rgb(199, 54, 54);
+    --rating-fill-color: #ffec46;
+    --rating-hollow-color: #ffe816;
+
+    --warning-color: #c73636;
 
     --navbar-height: 87px;
 }
@@ -59,7 +64,7 @@ body
 {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
 
     position: fixed;
@@ -327,7 +332,6 @@ body
     border-radius: 0.5rem;
 }
 
-
 .filters-btn
 {
     display: flex;
@@ -362,6 +366,13 @@ body
     background-color: var(--acctran-color);
 
     border-color: var(--accent-color);
+}
+
+.dashboard-movie-cards
+{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
 }
 
 
@@ -626,21 +637,81 @@ body
 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1.25rem;
+    gap: 2.25rem;
+
+    align-items: start;
 }
 
+/* =========================
+   Add Movie Button
+========================= */
+
+.search-container
+{
+    display: flex;
+    flex-direction: row;
+
+    align-items: stretch;
+    gap: 1rem;
+
+    width: 100%;
+}
+
+.search-bar
+{
+    flex: 9;
+
+    background-color: transparent;
+    border: 1px solid #333333;
+
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+.search-bar:hover
+{
+    border: 1px solid var(--acctran-color);
+    cursor: text;
+}
+.search-bar:focus
+{
+    border: 1px solid var(--accent-color);
+    color: var(--white-color);
+    outline: none;
+}
+
+.search-btn
+{
+    display: flex;
+    flex-direction: row;
+
+    flex: 1;
+    white-space: nowrap;
+
+    justify-content: center;
+    align-items: center;
+
+    color: var(--white-color);
+    background-color: var(--accent-color);
+
+    border-radius: 1rem;
+    padding: 0.5rem 0;
+    gap: 0.25rem;
+
+    border: transparent;
+    cursor: pointer;
+}
+.search-btn p
+{
+    font-size: 1rem;
+    font-weight: 600;
+}
 
 /* =========================
    Movie Cards
 ========================= */
-
-.movie-poster-cards
-{
-    display: flex;
-    flex-wrap: wrap;
-
-    gap: 1.5rem;
-}
 
 .movie-poster-card
 {
@@ -663,7 +734,7 @@ body
     display: flex;
     flex-direction: column;
 
-    padding: 0.5rem;
+    padding: 0.75rem;
 
     background-color: #272727;
     border: 1px solid #333333;
@@ -691,7 +762,7 @@ body
     overflow: hidden;
 }
 
-.movie-footer 
+.movie-text-content
 {
     display: flex;
     flex-direction: column;
@@ -725,17 +796,14 @@ body
     gap: 1rem;
 }
 
-.movie-info p
+.movie-status
 {
+
     font-size: 1rem;
     font-size: 400;
-}
-
-.movie-actions
-{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    
+    color: var(--secondary-text);
+    width: auto;
 }
 
 .movie-rating
@@ -747,23 +815,61 @@ body
     justify-content: center;
 }
 
-.movie-status
+.rating-star
 {
-    color: var(--secondary-text);
-    width: auto;
+    border: none;
+    background: transparent;
+    padding: 0;
+
+    font-size: 1.25rem;
+    line-height: 1;
+
+    cursor: pointer;
+    color: var(--rating-fill-color);
+
+    transition: color 0.4s ease, transform 0.2s ease;
+}
+.rating-star:hover
+{
+    color: var(--rating-hollow-color);
+    transform: scale(1.2);
+}
+.rating-star:focus
+{
+    outline: none;
+}
+.rating-star:active
+{
+    transform: scale(0.85);
+}
+
+.movie-actions
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .watch-btn
 {
-    background-color: var(--accent-color);
-    color: var(--primary-text);
+    background-color: transparent;
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
 
     font-size: 1rem;
     font-weight: 600;
-
-    border: transparent;
     border-radius: 0.5rem;
-    padding: 0.5rem 0.75rem;
+    padding: 0.75rem 0.75rem;
+
+    cursor: pointer;
+    transition: color 0.4s ease, transform 0.4s ease;
+}
+.watch-btn:hover
+{
+    background-color: var(--accent-color);
+    color: var(--white-color);
+
+    transform: scale(0.95);
 }
 
 .delete-btn
@@ -777,6 +883,16 @@ body
     border: 1px solid var(--warning-color);
     border-radius: 0.5rem;
     padding: 0.5rem 0.75rem;
+
+    cursor: pointer;
+    transition: color 0.4s ease, transform 0.4s ease;
+}
+.delete-btn:hover
+{
+    background-color: var(--warning-color);
+    color: var(--white-color);
+
+    transform: scale(0.95);
 }
 
 /* =========================
