@@ -283,6 +283,7 @@ body
 .watchlist-section
 {
     margin-top: var(--navbar-height);
+    margin-bottom: 2rem;
     padding: 2rem 5rem;
 }
 
@@ -418,6 +419,8 @@ body
 
     gap: 2rem;
 }
+
+
 
 
 /* =========================
@@ -910,7 +913,7 @@ body
 
     text-align: center;
 
-    gap: 0.75rem;
+    gap: 1rem;
 }
 
 .watchlist-empty[hidden]
